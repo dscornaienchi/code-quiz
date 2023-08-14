@@ -21,8 +21,7 @@ const questions = [
         choices: ['Hyper Text Markup Language', 'Home Tool Markup Language', 'Hyperlinks and Text Markup Language'],
         correct: 0
     },
-    /*
-    {
+    /*{
         question: 'Which programming language is known as the "mother of all languages"?',
         choices: ['C', 'Python', 'Assembly Language'],
         correct: 0
@@ -36,12 +35,7 @@ const questions = [
         question: 'Which built-in method adds one or more elements to the end of an array?',
         choices: ['push()', 'end()', 'addToEnd()'],
         correct: 0
-    },
-    {
-        question: 'What is the primary purpose of JavaScript?',
-        choices: ['Styling web pages', 'Enhancing interactivity', 'Managing databases'],
-        correct: 0
-    }*/
+    },*/
 ];
 
 let currentQuestionIndex = 0;
@@ -61,11 +55,17 @@ function startQuiz() {
     viewScoresButton.style.display = 'none'; // Hide the view scores button during the quiz
     quizScreen.style.display = 'block';
     viewScoresButton.style.display = 'block'; // Show the view scores button on question screens
+
+    // Hide the elements with the "hide-on-start" class
+    const hideOnStartElements = document.querySelectorAll('.hide-on-start');
+    hideOnStartElements.forEach(element => {
+        element.style.display = 'none';
+    });
+
     showQuestion();
     startTimer();
     updateTimerDisplay();
 }
-
 function viewHighScores() {
     // Implement logic to view high scores
 }
@@ -82,6 +82,12 @@ function showQuestion() {
             choiceButton.setAttribute('data-index', index);
             choicesElement.appendChild(choiceButton);
         });
+
+        if (currentQuestionIndex > 0) {
+            const previousQuestion = questions[currentQuestionIndex - 1];
+            const previousQuestionResult = previousQuestion.correct === previousQuestion.userChoice ? 'Correct' : 'Incorrect';
+            questionResultElement.textContent = `Previous question: ${previousQuestionResult}`;
+        }
     } else {
         endQuiz();
     }
@@ -92,14 +98,14 @@ function checkAnswer(event) {
         const selectedChoiceIndex = parseInt(event.target.getAttribute('data-index'));
         const currentQuestion = questions[currentQuestionIndex];
 
+        currentQuestion.userChoice = selectedChoiceIndex; // Record the user's choice
+
         if (selectedChoiceIndex === currentQuestion.correct) {
             score++;
             resultElement.textContent = 'Correct!';
-            questionResultElement.textContent = 'Previous question: Correct';
         } else {
             timeLeft -= 10;
             resultElement.textContent = 'Incorrect!';
-            questionResultElement.textContent = 'Previous question: Incorrect';
         }
 
         updateTimerDisplay();
