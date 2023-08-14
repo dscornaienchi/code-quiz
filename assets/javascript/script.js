@@ -10,8 +10,10 @@ const resultElement = document.getElementById('result');
 const finalScoreElement = document.getElementById('final-score');
 const initialsInput = document.getElementById('initials');
 const submitScoreButton = document.getElementById('submit-score');
-const clearScoresButton = document.getElementById('clear-scores');
-const goBackButton = document.getElementById('go-back');
+const backButton = document.getElementById('back-button');
+const clearButton = document.getElementById('clear-button');
+const scoreScreen = document.getElementById('score-screen');
+const scoresList = document.getElementById('scores');
 
 const questions = [
     {
@@ -19,10 +21,11 @@ const questions = [
         choices: ['Hyper Text Markup Language', 'Home Tool Markup Language', 'Hyperlinks and Text Markup Language'],
         correct: 0
     },
+    /*
     {
         question: 'Which programming language is known as the "mother of all languages"?',
         choices: ['C', 'Python', 'Assembly Language'],
-        correct: 2
+        correct: 0
     },
     {
         question: 'What does CSS stand for?',
@@ -37,8 +40,8 @@ const questions = [
     {
         question: 'What is the primary purpose of JavaScript?',
         choices: ['Styling web pages', 'Enhancing interactivity', 'Managing databases'],
-        correct: 1
-    }
+        correct: 0
+    }*/
 ];
 
 let currentQuestionIndex = 0;
@@ -50,8 +53,8 @@ startButton.addEventListener('click', startQuiz);
 viewScoresButton.addEventListener('click', viewHighScores); // Moved viewScoresButton event listener to the top
 choicesElement.addEventListener('click', checkAnswer);
 submitScoreButton.addEventListener('click', saveScore);
-clearScoresButton.addEventListener('click', clearScores);
-goBackButton.addEventListener('click', goBack);
+backButton.addEventListener('click', goBack);
+clearButton.addEventListener('click', clearHighScores);
 
 function startQuiz() {
     startButton.style.display = 'none';
@@ -134,19 +137,46 @@ function saveScore() {
         // Save the initials and score in storage or send to a server
         alert(`Score saved! Initials: ${initials}, Score: ${score}`);
         // You can implement more robust storage or server logic here
+
+        // Hide the result screen and show the score screen
+        resultScreen.style.display = 'none';
+        scoreScreen.style.display = 'block';
+        
+        // You can also call the function to show high scores immediately
+        showHighScores();
     }
 }
 
-function clearScores() {
-    // Clear high scores logic
-    // Implement this based on your storage or server
+function viewHighScores() {
+    startButton.style.display = 'none';
+    viewScoresButton.style.display = 'none';
+    quizScreen.style.display = 'none';
+    resultScreen.style.display = 'none';
+    scoreScreen.style.display = 'block';
+    showHighScores();
 }
 
 function goBack() {
+    scoreScreen.style.display = 'none';
     resultScreen.style.display = 'none';
+    quizScreen.style.display = 'none';
     startButton.style.display = 'block';
     viewScoresButton.style.display = 'block';
     currentQuestionIndex = 0;
     timeLeft = 60;
     score = 0;
+    updateTimerDisplay();
 }
+
+function clearHighScores() {
+    // Implement logic to clear high scores
+    scoresList.innerHTML = ''; // Clear high scores list
+}
+
+function showHighScores() {
+    // Implement logic to display high scores
+    // You should retrieve high scores from storage or a server and populate the scoresList
+    // Here's a placeholder example:
+    scoresList.innerHTML = '<li>John - 100</li><li>Jane - 85</li><li>Bob - 70</li>';
+}
+
