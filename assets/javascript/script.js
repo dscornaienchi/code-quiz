@@ -103,10 +103,6 @@ function checkAnswer(event) {
 
         currentQuestionIndex++;
         showQuestion();
-
-        currentQuestionIndex++;
-        viewScoresButton.style.display = 'block'; // Show the view scores button on every question screen
-        showQuestion();
     }
 }
 
@@ -128,13 +124,7 @@ function endQuiz() {
     clearInterval(timerInterval);
     quizScreen.style.display = 'none';
     resultScreen.style.display = 'block';
-    viewScoresButton.style.display = 'block'; // Show the view scores button on result screen
     finalScoreElement.textContent = score;
-
-    // Display "Clear High Scores" button when entering initials
-    if (initialsInput.value.trim() !== '') {
-        clearScoresButton.style.display = 'block';
-    }
 }
 
 function saveScore() {
