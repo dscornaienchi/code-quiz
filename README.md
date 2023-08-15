@@ -17,18 +17,14 @@ This code quiz website is designed to challenge the user to answer questions lik
 
 ## Usage
 
-The Github repository can be found at the URL here: 
+The Github repository can be found at the URL here: https://github.com/dscornaienchi/code-quiz 
 
-The website can be found at the URL here:
+The website can be found at the URL here: https://dscornaienchi.github.io/professional-portfolio 
 
 The website should look like the screenshot below:
 
-    ```md
-    ![alt text](assets/images/screenshot.png)
-    ```
+   [alt text](./assets/images/Website_Screenshot.jpg))
 
 ## Credits
-
-Insert any links to external assets, if any: 
 
 Tutorials and instruction provided by the University of Texas at Austin Full Stack Web Developement Program and it's affiliated professors and TA's.

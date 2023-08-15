@@ -17,25 +17,25 @@ const scoresList = document.getElementById('scores');
 
 const questions = [
     {
-        question: 'What does HTML stand for?',
-        choices: ['Hyper Text Markup Language', 'Home Tool Markup Language', 'Hyperlinks and Text Markup Language'],
-        correct: 0
-    },
-    /*{
-        question: 'Which programming language is known as the "mother of all languages"?',
-        choices: ['C', 'Python', 'Assembly Language'],
-        correct: 0
+        question: 'Which of the following is NOT a valid way to comment in JavaScript?',
+        choices: ['// Single-line comment', '/* Multi-line comment /', '<!-- Comment -->', '/* JSDoc-style comment */'],
+        correct: 2
     },
     {
-        question: 'What does CSS stand for?',
-        choices: ['Cascading Style Sheet', 'Computer Style Sheet', 'Creative Style System'],
-        correct: 0
+        question: 'Which property is used in CSS to control the spacing between element content and their border?',
+        choices: ['Margin', 'Padding', 'Border-spacing', 'Gap'],
+        correct: 1
     },
     {
-        question: 'Which built-in method adds one or more elements to the end of an array?',
-        choices: ['push()', 'end()', 'addToEnd()'],
+        question: 'Which of the following is used to declare a variable in JavaScript?',
+        choices: ['vble', 'vari', 'let', 'varia'],
+        correct: 2
+    },
+    {
+        question: 'Which HTML element is used to link an external CSS file to an HTML document?',
+        choices: ['<link>', '<style>', '<css>', '<external>'],
         correct: 0
-    },*/
+    },
 ];
 
 let currentQuestionIndex = 0;
@@ -44,7 +44,7 @@ let score = 0;
 let timerInterval;
 
 startButton.addEventListener('click', startQuiz);
-viewScoresButton.addEventListener('click', viewHighScores); // Moved viewScoresButton event listener to the top
+viewScoresButton.addEventListener('click', viewHighScores);
 choicesElement.addEventListener('click', checkAnswer);
 submitScoreButton.addEventListener('click', saveScore);
 backButton.addEventListener('click', goBack);
@@ -52,16 +52,13 @@ clearButton.addEventListener('click', clearHighScores);
 
 function startQuiz() {
     startButton.style.display = 'none';
-    viewScoresButton.style.display = 'none'; // Hide the view scores button during the quiz
+    viewScoresButton.style.display = 'none'; 
     quizScreen.style.display = 'block';
-    viewScoresButton.style.display = 'block'; // Show the view scores button on question screens
-
-    // Hide the elements with the "hide-on-start" class
+    viewScoresButton.style.display = 'block'; 
     const hideOnStartElements = document.querySelectorAll('.hide-on-start');
     hideOnStartElements.forEach(element => {
         element.style.display = 'none';
     });
-
     showQuestion();
     startTimer();
     updateTimerDisplay();
@@ -72,7 +69,7 @@ function viewHighScores() {
 
 function showQuestion() {
     if (currentQuestionIndex < questions.length) {
-        questionResultElement.textContent = ''; // Clear previous feedback
+        questionResultElement.textContent = '';
         const question = questions[currentQuestionIndex];
         questionElement.textContent = question.question;
         choicesElement.innerHTML = '';
@@ -139,17 +136,16 @@ function endQuiz() {
 function saveScore() {
     const initials = initialsInput.value.trim();
 
-    if (initials !== '') {
-        // Save the initials and score in storage or send to a server
+    if (initials.length === 2) {
         alert(`Score saved! Initials: ${initials}, Score: ${score}`);
         // You can implement more robust storage or server logic here
 
-        // Hide the result screen and show the score screen
         resultScreen.style.display = 'none';
         scoreScreen.style.display = 'block';
         
-        // You can also call the function to show high scores immediately
         showHighScores();
+    } else {
+        alert("Please enter exactly two initials.");
     }
 }
 
@@ -168,6 +164,12 @@ function goBack() {
     quizScreen.style.display = 'none';
     startButton.style.display = 'block';
     viewScoresButton.style.display = 'block';
+
+    const hideOnStartElements = document.querySelectorAll('.hide-on-start');
+    hideOnStartElements.forEach(element => {
+        element.style.display = 'block';
+    });
+
     currentQuestionIndex = 0;
     timeLeft = 60;
     score = 0;
