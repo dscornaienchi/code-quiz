@@ -95,7 +95,7 @@ function checkAnswer(event) {
         const selectedChoiceIndex = parseInt(event.target.getAttribute('data-index'));
         const currentQuestion = questions[currentQuestionIndex];
 
-        currentQuestion.userChoice = selectedChoiceIndex; // Record the user's choice
+        currentQuestion.userChoice = selectedChoiceIndex;
 
         if (selectedChoiceIndex === currentQuestion.correct) {
             score++;
