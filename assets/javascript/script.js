@@ -178,7 +178,7 @@ function goBack() {
 
 function clearHighScores() {
     // Implement logic to clear high scores
-    scoresList.innerHTML = ''; // Clear high scores list
+    scoresList.innerHTML = '';
 }
 
 function showHighScores() {

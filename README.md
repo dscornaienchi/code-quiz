@@ -23,7 +23,7 @@ The website can be found at the URL here: https://dscornaienchi.github.io/profes
 
 The website should look like the screenshot below:
 
-   [alt text](./assets/images/Website_Screenshot.jpg))
+   [Code Quiz Website](./assets/images/Website_Screenshot.jpg)
 
 ## Credits
 
