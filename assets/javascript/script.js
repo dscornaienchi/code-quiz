@@ -1,21 +1,21 @@
-const startButton = document.getElementById('start-button');
-const viewScoresButton = document.getElementById('view-scores-button');
-const timerElement = document.getElementById('timer');
-const quizScreen = document.getElementById('quiz-screen');
-const questionResultElement = document.getElementById('question-result');
-const questionElement = document.getElementById('question');
-const choicesElement = document.getElementById('choices');
-const resultScreen = document.getElementById('result-screen');
-const resultElement = document.getElementById('result');
-const finalScoreElement = document.getElementById('final-score');
-const initialsInput = document.getElementById('initials');
-const submitScoreButton = document.getElementById('submit-score');
-const backButton = document.getElementById('back-button');
-const clearButton = document.getElementById('clear-button');
-const scoreScreen = document.getElementById('score-screen');
-const scoresList = document.getElementById('scores');
+var startButton = document.getElementById('start-button');
+var viewScoresButton = document.getElementById('view-scores-button');
+var timerElement = document.getElementById('timer');
+var quizScreen = document.getElementById('quiz-screen');
+var questionResultElement = document.getElementById('question-result');
+var questionElement = document.getElementById('question');
+var choicesElement = document.getElementById('choices');
+var resultScreen = document.getElementById('result-screen');
+var resultElement = document.getElementById('result');
+var finalScoreElement = document.getElementById('final-score');
+var initialsInput = document.getElementById('initials');
+var submitScoreButton = document.getElementById('submit-score');
+var backButton = document.getElementById('back-button');
+var clearButton = document.getElementById('clear-button');
+var scoreScreen = document.getElementById('score-screen');
+var scoresList = document.getElementById('scores');
 
-const questions = [
+var questions = [
     {
         question: 'Which of the following is NOT a valid way to comment in JavaScript?',
         choices: ['// Single-line comment', '/* Multi-line comment /', '<!-- Comment -->', '/* JSDoc-style comment */'],
@@ -42,6 +42,7 @@ let currentQuestionIndex = 0;
 let timeLeft = 60;
 let score = 0;
 let timerInterval;
+let highScores =[];
 
 startButton.addEventListener('click', startQuiz);
 viewScoresButton.addEventListener('click', viewHighScores);
@@ -76,7 +77,6 @@ function showQuestion() {
             choiceButton.setAttribute('data-index', index);
             choicesElement.appendChild(choiceButton);
         });
-
         if (currentQuestionIndex > 0) {
             const previousQuestion = questions[currentQuestionIndex - 1];
             const previousQuestionResult = previousQuestion.correct === previousQuestion.userChoice ? 'Correct' : 'Incorrect';
@@ -91,9 +91,7 @@ function checkAnswer(event) {
     if (event.target.tagName === 'BUTTON') {
         const selectedChoiceIndex = parseInt(event.target.getAttribute('data-index'));
         const currentQuestion = questions[currentQuestionIndex];
-
         currentQuestion.userChoice = selectedChoiceIndex;
-
         if (selectedChoiceIndex === currentQuestion.correct) {
             score++;
             resultElement.textContent = 'Correct!';
@@ -130,10 +128,12 @@ function endQuiz() {
 
 function saveScore() {
     const initials = initialsInput.value.trim();
-
     if (initials.length === 2) {
+        const newScore = { initials, score};
+        highScores.push(newScore);
+        highScores.sort((a, b) => b.score - a.score);
+        localStorage.setItem('highScores',JSON.stringify(highScores));
         alert(`Score saved! Initials: ${initials}, Score: ${score}`);
-        // implement more robust storage or server logic here
         resultScreen.style.display = 'none';
         scoreScreen.style.display = 'block';
         showHighScores();
@@ -157,12 +157,10 @@ function goBack() {
     quizScreen.style.display = 'none';
     startButton.style.display = 'block';
     viewScoresButton.style.display = 'block';
-
     const hideOnStartElements = document.querySelectorAll('.hide-on-start');
     hideOnStartElements.forEach(element => {
         element.style.display = 'block';
     });
-
     currentQuestionIndex = 0;
     timeLeft = 60;
     score = 0;
@@ -170,13 +168,21 @@ function goBack() {
 }
 
 function showHighScores() {
-    // Implement logic to display high scores
-    // Retrieve high scores from storage or a server and populate the scoresList
-    // placeholder example:
-    scoresList.innerHTML = '<li>John - 100</li><li>Jane - 85</li><li>Bob - 70</li>';
+    scoresList.innerHTML = '';
+    const storedScores = localStorage.getItem('highScores');
+    if (storedScores) {
+        highScores = JSON.parse(storedScores);
+        highScores.forEach(entry => {
+            const scoreItem = document.createElement('li');
+            scoreItem.textContent = `${entry.initials} - ${entry.score}`;
+            scoresList.appendChild(scoreItem);
+        });
+    }
 }
 
 function clearHighScores() {
+    highScores = [];
+    localStorage.removeItem('highScores');
     scoresList.innerHTML = '';
 }
 

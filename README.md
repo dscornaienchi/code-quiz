@@ -19,7 +19,7 @@ This code quiz website is designed to challenge the user to answer questions lik
 
 The Github repository can be found at the URL here: https://github.com/dscornaienchi/code-quiz 
 
-The website can be found at the URL here: https://dscornaienchi.github.io/professional-portfolio 
+The website can be found at the URL here: https://dscornaienchi.github.io/code-quiz 
 
 The website should look like the screenshot below:
 
