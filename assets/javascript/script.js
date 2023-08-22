@@ -138,11 +138,9 @@ function saveScore() {
 
     if (initials.length === 2) {
         alert(`Score saved! Initials: ${initials}, Score: ${score}`);
-        // You can implement more robust storage or server logic here
-
+        // implement more robust storage or server logic here
         resultScreen.style.display = 'none';
         scoreScreen.style.display = 'block';
-        
         showHighScores();
     } else {
         alert("Please enter exactly two initials.");
@@ -183,8 +181,8 @@ function clearHighScores() {
 
 function showHighScores() {
     // Implement logic to display high scores
-    // You should retrieve high scores from storage or a server and populate the scoresList
-    // Here's a placeholder example:
+    // Retrieve high scores from storage or a server and populate the scoresList
+    // placeholder example:
     scoresList.innerHTML = '<li>John - 100</li><li>Jane - 85</li><li>Bob - 70</li>';
 }
 
