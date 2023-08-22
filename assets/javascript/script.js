@@ -1,3 +1,5 @@
+
+// Get references to various DOM elements
 var startButton = document.getElementById('start-button');
 var viewScoresButton = document.getElementById('view-scores-button');
 var timerElement = document.getElementById('timer');
@@ -15,6 +17,7 @@ var clearButton = document.getElementById('clear-button');
 var scoreScreen = document.getElementById('score-screen');
 var scoresList = document.getElementById('scores');
 
+// Define the quiz questions with their choices and correct answers
 var questions = [
     {
         question: 'Which of the following is NOT a valid way to comment in JavaScript?',
@@ -38,12 +41,14 @@ var questions = [
     },
 ];
 
+//Initialize global variables
 let currentQuestionIndex = 0;
 let timeLeft = 60;
 let score = 0;
 let timerInterval;
 let highScores =[];
 
+// add event listeners to buttons and elements so clicking them calls a function
 startButton.addEventListener('click', startQuiz);
 viewScoresButton.addEventListener('click', viewHighScores);
 choicesElement.addEventListener('click', checkAnswer);
@@ -52,17 +57,37 @@ backButton.addEventListener('click', goBack);
 clearButton.addEventListener('click', clearHighScores);
 
 function startQuiz() {
+    // Hides Start quiz button
     startButton.style.display = 'none';
-    viewScoresButton.style.display = 'none'; 
+    // Display the questions once quiz starts 
     quizScreen.style.display = 'block';
-    viewScoresButton.style.display = 'block'; 
+    // Hides "Coding Quiz Challenge" and instructions
     const hideOnStartElements = document.querySelectorAll('.hide-on-start');
     hideOnStartElements.forEach(element => {
         element.style.display = 'none';
     });
-    showQuestion();
+    // Functions to run once startQuiz is called by the event listener
     startTimer();
     updateTimerDisplay();
+    showQuestion();
+}
+
+function startTimer() {
+    //interval that decrements the time left variable every second
+    timerInterval = setInterval(() => {
+        timeLeft--;
+    // if the time reaches or goes below zero, the interval timer is stopped and the quiz ends
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            endQuiz();
+        }
+    // timer goes every 1000 milliseconds, aka 1 second 
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    //shows how much time remains by using a DOM element and then inserting the timeLeft variable
+    timerElement.textContent = `Time: ${timeLeft}`;
 }
 
 function showQuestion() {
@@ -105,20 +130,6 @@ function checkAnswer(event) {
     }
 }
 
-function startTimer() {
-    timerInterval = setInterval(() => {
-        timeLeft--;
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            endQuiz();
-        }
-    }, 1000);
-}
-
-function updateTimerDisplay() {
-    timerElement.textContent = `Time: ${timeLeft}`;
-}
-
 function endQuiz() {
     clearInterval(timerInterval);
     quizScreen.style.display = 'none';
@@ -151,22 +162,6 @@ function viewHighScores() {
     showHighScores();
 }
 
-function goBack() {
-    scoreScreen.style.display = 'none';
-    resultScreen.style.display = 'none';
-    quizScreen.style.display = 'none';
-    startButton.style.display = 'block';
-    viewScoresButton.style.display = 'block';
-    const hideOnStartElements = document.querySelectorAll('.hide-on-start');
-    hideOnStartElements.forEach(element => {
-        element.style.display = 'block';
-    });
-    currentQuestionIndex = 0;
-    timeLeft = 60;
-    score = 0;
-    updateTimerDisplay();
-}
-
 function showHighScores() {
     scoresList.innerHTML = '';
     const storedScores = localStorage.getItem('highScores');
@@ -186,3 +181,18 @@ function clearHighScores() {
     scoresList.innerHTML = '';
 }
 
+function goBack() {
+    scoreScreen.style.display = 'none';
+    resultScreen.style.display = 'none';
+    quizScreen.style.display = 'none';
+    startButton.style.display = 'block';
+    viewScoresButton.style.display = 'block';
+    const hideOnStartElements = document.querySelectorAll('.hide-on-start');
+    hideOnStartElements.forEach(element => {
+        element.style.display = 'block';
+    });
+    currentQuestionIndex = 0;
+    timeLeft = 60;
+    score = 0;
+    updateTimerDisplay();
+}
