@@ -63,9 +63,6 @@ function startQuiz() {
     startTimer();
     updateTimerDisplay();
 }
-function viewHighScores() {
-    // Implement logic to view high scores
-}
 
 function showQuestion() {
     if (currentQuestionIndex < questions.length) {
@@ -104,9 +101,7 @@ function checkAnswer(event) {
             timeLeft -= 10;
             resultElement.textContent = 'Incorrect!';
         }
-
         updateTimerDisplay();
-
         currentQuestionIndex++;
         showQuestion();
     }
@@ -174,15 +169,14 @@ function goBack() {
     updateTimerDisplay();
 }
 
-function clearHighScores() {
-    // Implement logic to clear high scores
-    scoresList.innerHTML = '';
-}
-
 function showHighScores() {
     // Implement logic to display high scores
     // Retrieve high scores from storage or a server and populate the scoresList
     // placeholder example:
     scoresList.innerHTML = '<li>John - 100</li><li>Jane - 85</li><li>Bob - 70</li>';
+}
+
+function clearHighScores() {
+    scoresList.innerHTML = '';
 }
 
