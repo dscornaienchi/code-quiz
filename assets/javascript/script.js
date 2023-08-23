@@ -91,17 +91,22 @@ function updateTimerDisplay() {
 }
 
 function showQuestion() {
+    //if the current question index is lesss than the number of questions, code in the block will execute 
     if (currentQuestionIndex < questions.length) {
+        // question result element is cleared to remove previous question results 
         questionResultElement.textContent = '';
+        // current question retrieved from the questions array using the index, and the text is displayed using question.element, with the previous choices being cleared with choicesElement
         const question = questions[currentQuestionIndex];
         questionElement.textContent = question.question;
         choicesElement.innerHTML = '';
+        // for each choice, a new button element is created, the text content is set to choice text, and the data-index attribute is added to associate the choice with its index. created buttons are appended to display on the screen
         question.choices.forEach((choice, index) => {
             const choiceButton = document.createElement('button');
             choiceButton.textContent = choice;
             choiceButton.setAttribute('data-index', index);
             choicesElement.appendChild(choiceButton);
         });
+        // If 
         if (currentQuestionIndex > 0) {
             const previousQuestion = questions[currentQuestionIndex - 1];
             const previousQuestionResult = previousQuestion.correct === previousQuestion.userChoice ? 'Correct' : 'Incorrect';
@@ -113,10 +118,13 @@ function showQuestion() {
 }
 
 function checkAnswer(event) {
+    //if a choice button is clicked, retrieve the selected choice from the data-index attribute. 
     if (event.target.tagName === 'BUTTON') {
         const selectedChoiceIndex = parseInt(event.target.getAttribute('data-index'));
+        //retrieve the current question using the currentQuestionIndex and store the user's choice in the current question object 
         const currentQuestion = questions[currentQuestionIndex];
         currentQuestion.userChoice = selectedChoiceIndex;
+        // if the selected choice index matches the correct answer index of the current question, mark as correct. if not, mark as incorrect and deduct 10 seconds from the timer 
         if (selectedChoiceIndex === currentQuestion.correct) {
             score++;
             resultElement.textContent = 'Correct!';
@@ -124,12 +132,14 @@ function checkAnswer(event) {
             timeLeft -= 10;
             resultElement.textContent = 'Incorrect!';
         }
+        //update timer, move on to next question, and show the next question
         updateTimerDisplay();
         currentQuestionIndex++;
         showQuestion();
     }
 }
 
+// when endQuiz runs, clear the timer, remove the quizScreen, display the resultScreen, and display the final score element
 function endQuiz() {
     clearInterval(timerInterval);
     quizScreen.style.display = 'none';
@@ -137,10 +147,15 @@ function endQuiz() {
     finalScoreElement.textContent = score;
 }
 
+
 function saveScore() {
+    //add the enterted initials as the variable value
     const initials = initialsInput.value.trim();
+    // if the initials length is equal to 2, this runs, if not, an alert is displayed to only enter two initials
     if (initials.length === 2) {
+        // create a newScore object that contains initials and score
         const newScore = { initials, score};
+        // add new score to high scores array, sorting them in descending order based on score, and storing them in local storage as a JSON string. Display an alert confirming score is saved, then hide the result screen and bring up the score screen. Lastly, the updated list of high scores is displayed on the score screen
         highScores.push(newScore);
         highScores.sort((a, b) => b.score - a.score);
         localStorage.setItem('highScores',JSON.stringify(highScores));
@@ -153,6 +168,7 @@ function saveScore() {
     }
 }
 
+//When the High Scores button is clicked, start button, view scores button, quiz screen, and result screen are removed. Score screen is displayed, and the high scores are shown
 function viewHighScores() {
     startButton.style.display = 'none';
     viewScoresButton.style.display = 'none';
@@ -163,10 +179,13 @@ function viewHighScores() {
 }
 
 function showHighScores() {
+    // Clear the content of the scoresList element first, then retrieve the stored high scores from local storage 
     scoresList.innerHTML = '';
     const storedScores = localStorage.getItem('highScores');
+    //If there are stored scores, parse the JSON string to convert it into an array of high score objects, parsing storedScores and assigning to the highScores array 
     if (storedScores) {
         highScores = JSON.parse(storedScores);
+        // for each entry, create a new list item and assign to the variable scoreItem, using textContent to display as initials then score, appending the scoresList to scoreItem variable
         highScores.forEach(entry => {
             const scoreItem = document.createElement('li');
             scoreItem.textContent = `${entry.initials} - ${entry.score}`;
@@ -175,12 +194,14 @@ function showHighScores() {
     }
 }
 
+//if the clear high scores button is clicked, clear highScores array, remove highScores from local storage, and clear displayed scores
 function clearHighScores() {
     highScores = [];
     localStorage.removeItem('highScores');
     scoresList.innerHTML = '';
 }
 
+// if the go back button is clicked, remove scoreScreen, resultScreen, and QuizScreen. Display the start button and view scores button, bring back the high on start elements (title and welcome paragraph), display as a block, and reset the variables. Also show the timer display. 
 function goBack() {
     scoreScreen.style.display = 'none';
     resultScreen.style.display = 'none';
